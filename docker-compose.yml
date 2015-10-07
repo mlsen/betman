@@ -1,0 +1,12 @@
+application:
+    build: .
+    command: nodemon --harmony /application/src/index.js
+    links:
+        - postgres
+    ports:
+        - "3000:3000"
+    volumes:
+        - ./src:/application/src
+
+postgres:
+    image: postgres
