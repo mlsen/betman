@@ -28,9 +28,7 @@ const detail = function(req, res) {
     if(!user) {
       return res.status(404).end();
     }
-    user.checkPassword('blbub').then((ok) => {
-      res.json(_.omit(user.toJSON(), 'password'));
-    });
+    res.json(_.omit(user.toJSON(), 'password'));
   }).catch(err => {
     res.status(500).json(err);
   });

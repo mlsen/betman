@@ -7,6 +7,8 @@ application:
         - "3000:3000"
     volumes:
         - ./src:/application/src
+    environment:
+        - MAILGUN_KEY
 
 postgres:
     image: postgres
