@@ -3,8 +3,10 @@ application:
     command: nodemon --harmony /application/src/index.js
     links:
         - postgres
+        - redis
     ports:
         - "3000:3000"
+        - "3001:3001"
     volumes:
         - ./src:/application/src
     environment:
@@ -12,3 +14,6 @@ application:
 
 postgres:
     image: postgres
+
+redis:
+    image: redis

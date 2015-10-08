@@ -1,8 +1,9 @@
-const bookshelf = require('../bookshelf');
+const bookshelf = require('../helpers/bookshelf');
 const Checkit = require('checkit');
 const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
-const mailgun = require('../mailgun');
+const email = require('../helpers/mailer');
+const utils = require('../helpers/utils');
 
 const User = bookshelf.Model.extend({
   tableName: 'users',
@@ -12,6 +13,8 @@ const User = bookshelf.Model.extend({
     bookshelf.Model.apply(this, arguments);
     this.on('saving', this.validate, this);
     this.on('creating', this.hashPassword, this);
+    this.on('creating', this.createActivationKey, this);
+    this.on('created', this.sendActivationEmail, this);
   },
 
   validations: {
@@ -47,9 +50,29 @@ const User = bookshelf.Model.extend({
     });
   },
 
-  sendMail: function(subject, text) {
-    return mailgun.sendMail(this.attributes.email, subject, text);
+  email: function(data) {
+    return email({
+      recipient: this.attributes.email,
+      subject: data.subject,
+      text: data.text
+    });
+  },
+
+  createActivationKey: function(model) {
+    const key = utils.makeRandomString(15);
+    console.log('createActivationKey', key);
+    model.set('activation_key', key);
+  },
+
+  sendActivationEmail: function(model) {
+    console.log(model.attributes);
+    model.email({
+      subject: 'Activate your account',
+      text: 'Here you go: ' + model.attributes.activation_key
+    });
   }
+
+
 });
 
 module.exports = User;

@@ -18,6 +18,12 @@ module.exports = {
     }
   },
 
+  redis: {
+    host: process.env.REDIS_PORT_6379_TCP_ADDR,
+    port: process.env.REDIS_PORT_6379_TCP_PORT,
+    db: 0
+  },
+
   mailgun: {
     key: process.env.MAILGUN_KEY,
     sender: 'betman@betman.org'

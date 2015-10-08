@@ -9,7 +9,6 @@ const create = function(req, res) {
   }).save().then(user => {
     res.json(_.omit(user.toJSON(), 'password'));
   }).catch(err => {
-    console.log(err);
     res.status(500).json(err);
   });
 };
@@ -28,13 +27,8 @@ const detail = function(req, res) {
     if(!user) {
       return res.status(404).end();
     }
-    user.sendMail('Hallo', 'Hallo du da, was geht?').then(() => {
-      console.log('Mail sent!');
-      res.json(_.omit(user.toJSON(), 'password'));
-    }).catch(err => {
-      console.log('Error!');
-    });
 
+    res.json(_.omit(user.toJSON(), 'password'));
   }).catch(err => {
     res.status(500).json(err);
   });
@@ -42,7 +36,9 @@ const detail = function(req, res) {
 
 const destroy = function(req, res) {
   User.where('id', req.params.id).fetch().then(user => {
-    if(!user) return res.status(404).end();
+    if(!user) {
+      return res.status(404).end();
+    }
 
     user.destroy().then(() => {
       res.status(204).end();
