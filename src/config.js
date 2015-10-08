@@ -19,7 +19,8 @@ module.exports = {
   },
 
   mailgun: {
-    key: process.env.MAILGUN_KEY
+    key: process.env.MAILGUN_KEY,
+    sender: 'betman@betman.org'
   }
 
 };

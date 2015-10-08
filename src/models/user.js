@@ -2,6 +2,7 @@ const bookshelf = require('../bookshelf');
 const Checkit = require('checkit');
 const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
+const mailgun = require('../mailgun');
 
 const User = bookshelf.Model.extend({
   tableName: 'users',
@@ -44,6 +45,10 @@ const User = bookshelf.Model.extend({
         resolve(result);
       });
     });
+  },
+
+  sendMail: function(subject, text) {
+    return mailgun.sendMail(this.attributes.email, subject, text);
   }
 });
 

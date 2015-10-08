@@ -28,7 +28,13 @@ const detail = function(req, res) {
     if(!user) {
       return res.status(404).end();
     }
-    res.json(_.omit(user.toJSON(), 'password'));
+    user.sendMail('Hallo', 'Hallo du da, was geht?').then(() => {
+      console.log('Mail sent!');
+      res.json(_.omit(user.toJSON(), 'password'));
+    }).catch(err => {
+      console.log('Error!');
+    });
+
   }).catch(err => {
     res.status(500).json(err);
   });
