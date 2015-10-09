@@ -60,18 +60,15 @@ const User = bookshelf.Model.extend({
 
   createActivationKey: function(model) {
     const key = utils.makeRandomString(15);
-    console.log('createActivationKey', key);
     model.set('activation_key', key);
   },
 
   sendActivationEmail: function(model) {
-    console.log(model.attributes);
     model.email({
       subject: 'Activate your account',
       text: 'Here you go: ' + model.attributes.activation_key
     });
   }
-
 
 });
 
